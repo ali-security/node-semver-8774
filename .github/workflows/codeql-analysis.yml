@@ -7,18 +7,16 @@ on:
     branches:
       - main
       - latest
+      - master
   pull_request:
     branches:
       - main
       - latest
-  schedule:
-    # "At 10:00 UTC (03:00 PT) on Monday" https://crontab.guru/#0_10_*_*_1
-    - cron: "0 10 * * 1"
-
+      - master
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       actions: read
       contents: read

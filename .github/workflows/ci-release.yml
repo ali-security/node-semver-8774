@@ -22,7 +22,7 @@ jobs:
   lint-all:
     name: Lint All
     if: github.repository_owner == 'npm'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -32,8 +32,8 @@ jobs:
         if: inputs.check-sha
         id: check-output
         env:
-          JOB_NAME: "Lint All"
-          MATRIX_NAME: ""
+          JOB_NAME: Lint All
+          MATRIX_NAME: ''
         with:
           script: |
             const { owner, repo } = context.repo
@@ -108,13 +108,13 @@ jobs:
       matrix:
         platform:
           - name: Linux
-            os: ubuntu-latest
+            os: ubuntu-22.04
             shell: bash
           - name: macOS
-            os: macos-latest
+            os: macos-14
             shell: bash
           - name: Windows
-            os: windows-latest
+            os: windows-2022
             shell: cmd
         node-version:
           - 10.0.0
@@ -133,8 +133,8 @@ jobs:
         if: inputs.check-sha
         id: check-output
         env:
-          JOB_NAME: "Test All"
-          MATRIX_NAME: " - ${{ matrix.platform.name }} - ${{ matrix.node-version }}"
+          JOB_NAME: Test All
+          MATRIX_NAME: ' - ${{ matrix.platform.name }} - ${{ matrix.node-version }}'
         with:
           script: |
             const { owner, repo } = context.repo
@@ -185,7 +185,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Update Windows npm
         # node 12 and 14 ship with npm@6, which is known to fail when updating itself in windows
-        if: matrix.platform.os == 'windows-latest' && (startsWith(matrix.node-version, '12.') || startsWith(matrix.node-version, '14.'))
+        if: matrix.platform.os == 'windows-2022' && (startsWith(matrix.node-version, '12.') || startsWith(matrix.node-version, '14.'))
         run: |
           curl -sO https://registry.npmjs.org/npm/-/npm-7.5.4.tgz
           tar xf npm-7.5.4.tgz

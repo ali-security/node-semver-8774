@@ -31,7 +31,7 @@ jobs:
       check-id: ${{ steps.check.outputs.check_id }}
     name: Release
     if: github.repository_owner == 'npm'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -95,8 +95,8 @@ jobs:
         if: steps.release.outputs.pr-sha
         id: check-output
         env:
-          JOB_NAME: "Release"
-          MATRIX_NAME: ""
+          JOB_NAME: Release
+          MATRIX_NAME: ''
         with:
           script: |
             const { owner, repo } = context.repo
@@ -141,7 +141,7 @@ jobs:
       check-id: ${{ steps.check.outputs.check_id }}
     name: Update - Release
     if: github.repository_owner == 'npm' && needs.release.outputs.pr
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -186,8 +186,8 @@ jobs:
         if: steps.commit.outputs.sha
         id: check-output
         env:
-          JOB_NAME: "Update - Release"
-          MATRIX_NAME: ""
+          JOB_NAME: Update - Release
+          MATRIX_NAME: ''
         with:
           script: |
             const { owner, repo } = context.repo
@@ -234,7 +234,7 @@ jobs:
 
   ci:
     name: CI - Release
-    needs: [ release, update ]
+    needs: [release, update]
     if: needs.release.outputs.pr
     uses: ./.github/workflows/ci-release.yml
     with:
@@ -242,10 +242,10 @@ jobs:
       check-sha: ${{ needs.update.outputs.sha }}
 
   post-ci:
-    needs: [ release, update, ci ]
+    needs: [release, update, ci]
     name: Post CI - Release
     if: github.repository_owner == 'npm' && needs.release.outputs.pr && always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -274,7 +274,7 @@ jobs:
     needs: release
     name: Post Release - Release
     if: github.repository_owner == 'npm' && needs.release.outputs.releases
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -316,7 +316,7 @@ jobs:
     needs: release
     name: Release Integration
     if: needs.release.outputs.release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -342,10 +342,10 @@ jobs:
         run: npm publish --provenance
 
   post-release-integration:
-    needs: [ release, release-integration ]
+    needs: [release, release-integration]
     name: Post Release Integration - Release
     if: github.repository_owner == 'npm' && needs.release.outputs.release && always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash

@@ -9,15 +9,12 @@ on:
     branches:
       - main
       - latest
-  schedule:
-    # "At 09:00 UTC (02:00 PT) on Monday" https://crontab.guru/#0_9_*_*_1
-    - cron: "0 9 * * 1"
-
+      - master
 jobs:
   lint:
     name: Lint
     if: github.repository_owner == 'npm'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
@@ -51,13 +48,13 @@ jobs:
       matrix:
         platform:
           - name: Linux
-            os: ubuntu-latest
+            os: ubuntu-22.04
             shell: bash
           - name: macOS
-            os: macos-latest
+            os: macos-14
             shell: bash
           - name: Windows
-            os: windows-latest
+            os: windows-2022
             shell: cmd
         node-version:
           - 10.0.0
@@ -83,7 +80,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Update Windows npm
         # node 12 and 14 ship with npm@6, which is known to fail when updating itself in windows
-        if: matrix.platform.os == 'windows-latest' && (startsWith(matrix.node-version, '12.') || startsWith(matrix.node-version, '14.'))
+        if: matrix.platform.os == 'windows-2022' && (startsWith(matrix.node-version, '12.') || startsWith(matrix.node-version, '14.'))
         run: |
           curl -sO https://registry.npmjs.org/npm/-/npm-7.5.4.tgz
           tar xf npm-7.5.4.tgz
